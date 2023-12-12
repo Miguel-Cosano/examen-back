@@ -1,8 +1,6 @@
 const ServiceProducto = require('../services/productoService');
 const serviceProducto = new ServiceProducto();
 
-const ServicePuja = require('../services/pujaService');
-const servicePuja = new ServicePuja();
 
 const ServiceUsuario = require('../services/usuarioService')
 const serviceUsuario = new ServiceUsuario()
@@ -32,17 +30,6 @@ const filtrarProductos = async(req, res) => {
         res.status(500).send({success: false, message: error.message});
     }
 }
-
-const listarProductosPorPujasUsuario = async(req, res) => {
-    try {
-        const pujas = await servicePuja.findByUser(req.query.usuario);
-        const productosByPujas = await serviceProducto.findByPujasUsuario(pujas);
-        res.status(200).send({productos: productosByPujas});
-    } catch (error) {
-        res.status(500).send({success: false, message: error.message});
-    }
-}
-
 const guardarProducto = async(req, res) => {
     try {
         
@@ -92,7 +79,6 @@ const borrarProducto = async (req, res) => {
     try {
         const producto = await serviceProducto.delete(req.params.id);
         if (producto) {
-            await servicePuja.deletePujasByProduct(req.params.id);
             res.status(200).send({message: 'Producto ' + req.params.id + ' borrado con éxito', producto: producto});
         } else {
             res.status(400).send({message: 'No existe el producto ' + req.params.id});
@@ -103,4 +89,4 @@ const borrarProducto = async (req, res) => {
     }
 }
 
-module.exports = {listarProductos, listarProductosPorPujasUsuario, guardarProducto, borrarProducto, filtrarProductos}
+module.exports = {listarProductos, guardarProducto, borrarProducto, filtrarProductos}
