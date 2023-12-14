@@ -3,8 +3,6 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
-const NodeCache = require("node-cache");
-global.cacheToken = new NodeCache();
 
 const {routerImage} = require('./routes/routerImage')
 const {routerProducto} = require('./routes/routerProducto')

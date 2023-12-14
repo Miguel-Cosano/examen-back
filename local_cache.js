@@ -4,6 +4,7 @@ class CacheLocal {
     static _instance;
 
     constructor(ttlSeconds) {
+        console.log("CacheLocal created")
         this.cache = new NodeCache({
             stdTTL: ttlSeconds,
             checkperiod: ttlSeconds * 0.2,
@@ -15,6 +16,7 @@ class CacheLocal {
         if (!CacheLocal._instance) {
             CacheLocal._instance = new CacheLocal(0);
         }
+        console.log("CacheLocal instance returned")
         return CacheLocal._instance;
     }
 
