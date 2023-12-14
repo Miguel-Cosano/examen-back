@@ -208,10 +208,11 @@ class ServiceProducto {
                 puja: {}
             }
         );
+        if(imagen !== undefined && imagen !== null && imagen !== ''){
+            const res_upload = await uploadImage(res._id, res.imagen)
+        }
 
-        const res_upload = await uploadImage(res._id, res.imagen)
-
-        return res_upload;
+        return res;
     }
 
     async checkProductoActualizable(id) {
