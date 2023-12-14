@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const {routerImage} = require('./routes/routerImage')
 const {routerProducto} = require('./routes/routerProducto')
 const {routerUsuario} = require('./routes/usuarioRoute')
+const {routerLocation} = require('./routes/routerLocation')
 
 app.use(cors())
 
@@ -24,6 +25,7 @@ app.get('/', (req, res, next) => {
 app.use('/upload', routerImage)
 app.use('/producto', routerProducto)
 app.use('/usuario', routerUsuario)
+app.use('/location', routerLocation)
 
 const port = 5001
 app.listen(port, () => {
