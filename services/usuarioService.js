@@ -51,27 +51,29 @@ class ServiceUsuario {
 
     async createOrUpdateUsuarioFromGoogle(token) {
         try {
-            //Obtenemos los datos del usuario de Google
-            const json = await this.getDataFromGoogleToken(token);
+
             //Comprobamos si el usuario existe en la base de datos
-            const usuario = await this.getUsuarioByCorreo(json.res.email);
+            const usuario = await this.getUsuarioByCorreo(token.email);
             //Si no existe, lo creamos
             let result;
             if(usuario === [] || usuario === null){
                 result = await Usuario.create(
                     {
-                        nombre: json.res.name,
-                        correo: json.res.email,
-                        imagen: json.res.picture
+                        nombre: token.name,
+                        correo: token.email,
+                        imagen: token.picture
                     }
                 )
+            console.log("Usuario creado con los datos de Google")
             //Si existe, en caso de que sea necesario actualizamos la imagen
             }else{
                 if(usuario.imagen !== null|| usuario.imagen === json.picture){
 
-                    result = await Usuario.findOneAndUpdate({correo: json.res.email}, { imagen: json.res.picture },
+                    result = await Usuario.findOneAndUpdate({correo: token.email}, { imagen: token.picture },
                         { new: true });
+                    console.log("Usuario actualizado con los datos de Google")
                 }else{
+                    console.log("El usuario ya tiene foto no se actualiza nada")
                     result = usuario;
                 }
             }
@@ -101,6 +103,7 @@ class ServiceUsuario {
             let response = await axios.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + googleToken);
 
             if(response.status === 200){
+                this.createOrUpdateUsuarioFromGoogle(response.data)
                 cache.set(googleToken, response.data.exp*1000);
                 console.log("Token guardado en cache:"+cache.get(googleToken))
                 return {status: 200, res: {email:response.data.email, token:googleToken}}
