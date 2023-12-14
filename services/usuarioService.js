@@ -1,7 +1,10 @@
 const Usuario = require('../db/models/usuario');
+const NodeCache = require('node-cache');
+const axios = require('axios');
 
 const ServiceProducto = require('../services/productoService');
 const serviceProducto = new ServiceProducto();
+const cache = new NodeCache();
 
 function formatarFecha(fecha) {
     const dia = fecha.getDate().toString().padStart(2, '0');
@@ -11,13 +14,13 @@ function formatarFecha(fecha) {
     return `${dia}/${mes}/${año}`;
 }
 class ServiceUsuario {
+
     constructor() {}
 
     async createUsuario(usuario) {
         try {
             const foundUsuario = await Usuario.find({});
             const existingUsuarios = foundUsuario.map(usuario => usuario.toJSON());
-    
             for (const existingUsuario of existingUsuarios) {
                 if (existingUsuario['correo'] === usuario['correo']) {
                     return {message: "Ya existe un usuario con el mismo correo"};
@@ -78,14 +81,29 @@ class ServiceUsuario {
         }
     }
 
-
+    checkToken(token) {
+        console.log("Token guardado en cache:"+cache.get(token))
+        let val = cache.get(token)
+        if(val === undefined){
+            return false;
+        }else{
+            if(Date.now()>val){
+                cache.del(token)
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
 
     async verifyGoogleToken(googleToken) {
         try {
-            const response = await fetch('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + googleToken);
+            let response = await axios.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + googleToken);
 
             if(response.status === 200){
-                return {status: 200, res: "El token es válido"};
+                cache.set(googleToken, response.data.exp*1000);
+                console.log("Token guardado en cache:"+cache.get(googleToken))
+                return {status: 200, res: {email:response.data.email, token:googleToken}}
             }else{
                 return {status: 401, res: "El token de sesión no es válido"}
             }

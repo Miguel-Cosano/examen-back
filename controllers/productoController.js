@@ -7,16 +7,21 @@ const serviceUsuario = new ServiceUsuario()
 
 const listarProductos = async(req, res) => {
     try {
-        if (typeof req.params.id !== 'undefined' && req.params.id !== null && req.params.id !== '') {
-            const producto = await serviceProducto.findById(req.params.id);
-              res.status(200).send({producto: producto});
-          } else if (typeof req.query.usuario !== 'undefined' && req.query.usuario !== null && req.query.usuario !== '') {
-              const productos = await serviceProducto.findByUsuario(req.query.usuario);
-              res.status(200).send({productos: productos});
-          } else {
-              const productos = await serviceProducto.findAll();
-              res.status(200).send({productos: productos});
-          }
+        if(!serviceUsuario.checkToken(req.query.token)){
+            res.status(401).send("Token no valido")
+        }else{
+            if (typeof req.params.id !== 'undefined' && req.params.id !== null && req.params.id !== '') {
+                const producto = await serviceProducto.findById(req.params.id);
+                res.status(200).send({producto: producto});
+            } else if (typeof req.query.usuario !== 'undefined' && req.query.usuario !== null && req.query.usuario !== '') {
+                const productos = await serviceProducto.findByUsuario(req.query.usuario);
+                res.status(200).send({productos: productos});
+            } else {
+                const productos = await serviceProducto.findAll();
+                res.status(200).send({productos: productos});
+            }
+        }
+
     } catch (error) {
         res.status(500).send({success: false, message: error.message});
     }

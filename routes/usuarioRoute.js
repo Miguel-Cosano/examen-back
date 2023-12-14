@@ -13,8 +13,7 @@ routerUsuario.put('/', updateUsuarioController)
 routerUsuario.put('/valoracion', updateValoracionController)
 routerUsuario.get('/valoracionMedia', getRatingUsuarioController)
 routerUsuario.get('/valoracion', getValoracionUsuarioController)
-routerUsuario.get('/checkToken', checkToken)
-routerUsuario.get('/checkOrCreate', checkUserFromGoogle)
+routerUsuario.post('/checkToken', checkToken)
 
 module.exports = {
     routerUsuario

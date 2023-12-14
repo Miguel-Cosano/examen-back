@@ -27,7 +27,7 @@ const checkToken = async (req, res, next) => {
     try{
         const isValid = await serviceUsuario.verifyGoogleToken(req.query.token)
 
-        res.status(isValid.status).send(isValid);
+        res.status(isValid.status).send(isValid.res);
 
     }catch(error){
         res.status(500).send({success: false, message: error.message});
