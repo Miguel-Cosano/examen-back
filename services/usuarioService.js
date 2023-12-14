@@ -4,8 +4,7 @@ const axios = require('axios');
 const ServiceProducto = require('../services/productoService');
 const serviceProducto = new ServiceProducto();
 
-const cache = global.cacheToken;
-
+const cache = require('../local_cache')
 function formatarFecha(fecha) {
     const dia = fecha.getDate().toString().padStart(2, '0');
     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 porque los meses comienzan desde 0
@@ -84,7 +83,6 @@ class ServiceUsuario {
     }
 
     checkToken(token) {
-        console.log("Token guardado en cache:"+cache.get(token))
         let val = cache.get(token)
         if(val === undefined){
             return false;
