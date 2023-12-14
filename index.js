@@ -8,6 +8,8 @@ const {routerImage} = require('./routes/routerImage')
 const {routerProducto} = require('./routes/routerProducto')
 const {routerUsuario} = require('./routes/usuarioRoute')
 
+app.use(cors())
+
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
@@ -17,7 +19,7 @@ app.get('/', (req, res, next) => {
     next()
 })
 
-app.use(cors())
+
 
 app.use('/upload', routerImage)
 app.use('/producto', routerProducto)
