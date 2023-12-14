@@ -8,7 +8,7 @@ const routerUsuario = express.Router()
 
 routerUsuario.post('/', createUsuarioController)
 routerUsuario.get('/', getUsuarioByIdController)
-routerUsuario.delete('/:id', deleteUsuarioController)
+routerUsuario.delete('/:correo', deleteUsuarioController)
 routerUsuario.put('/', updateUsuarioController)
 routerUsuario.put('/valoracion', updateValoracionController)
 routerUsuario.get('/valoracionMedia', getRatingUsuarioController)
