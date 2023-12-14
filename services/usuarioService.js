@@ -1,10 +1,10 @@
 const Usuario = require('../db/models/usuario');
-const NodeCache = require('node-cache');
 const axios = require('axios');
 
 const ServiceProducto = require('../services/productoService');
 const serviceProducto = new ServiceProducto();
-const cache = new NodeCache();
+
+const cache = global.cacheToken;
 
 function formatarFecha(fecha) {
     const dia = fecha.getDate().toString().padStart(2, '0');
