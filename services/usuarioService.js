@@ -84,6 +84,7 @@ class ServiceUsuario {
 
     checkToken(token) {
         let val = cache.get(token)
+        console.log("Token obtenidod de cache:"+val)
         if(val === undefined){
             return false;
         }else{
