@@ -34,4 +34,4 @@ class CacheLocal {
     }
 }
 
-module.exports = CacheLocal.getInstance(0);
+module.exports = CacheLocal;
