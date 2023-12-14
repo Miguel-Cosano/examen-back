@@ -51,21 +51,25 @@ const checkUserFromGoogle = async (req, res, next) => {
 
 
 const getUsuarioByIdController = async (req, res, next) => {
-    
-    try{
-        if(req.query.nombre){
-            usuario = await serviceUsuario.getUsuarioByNombre(req.query.nombre)
-        }else if(req.query.correo){
-            usuario = await serviceUsuario.getUsuarioByCorreo(req.query.correo)
-        }else{
-            usuario = await serviceUsuario.getUsuarios()
-        }
+    if(!serviceUsuario.checkToken(req.query.token)){
+        res.status(401).send("Token no valido")
+    }else{
+        try{
+            if(req.query.nombre){
+                usuario = await serviceUsuario.getUsuarioByNombre(req.query.nombre)
+            }else if(req.query.correo){
+                usuario = await serviceUsuario.getUsuarioByCorreo(req.query.correo)
+            }else{
+                usuario = await serviceUsuario.getUsuarios()
+            }
 
-        res.status(200).send(usuario);
-    
-    }catch(error){
-        res.status(500).send({success: false, message: error.message});
+            res.status(200).send(usuario);
+
+        }catch(error){
+            res.status(500).send({success: false, message: error.message});
+        }
     }
+
 }
 
 const deleteUsuarioController = async (req, res, next) => {
