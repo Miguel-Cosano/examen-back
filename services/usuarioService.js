@@ -4,7 +4,9 @@ const axios = require('axios');
 const ServiceProducto = require('../services/productoService');
 const serviceProducto = new ServiceProducto();
 
-var cache = require('../local_cache')();
+const cache = require('node-persist');
+
+
 function formatarFecha(fecha) {
     const dia = fecha.getDate().toString().padStart(2, '0');
     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 porque los meses comienzan desde 0
@@ -82,15 +84,16 @@ class ServiceUsuario {
         }
     }
 
-    checkToken(token) {
-        let val = cache.get(token)
+    async checkToken(token) {
+        await cache.init();
+        let val = await cache.getItem(token)
         console.log("Token obtenidod de cache:"+val)
         if(val === undefined){
             return false;
         }else{
             if(Date.now()>val){
                 console.log("PONGO EL TOKEN A UNDEFINED")
-                cache.set(token, undefined);
+                cache.setItem(token, undefined);
                 return false;
             }else{
                 return true;
@@ -103,8 +106,9 @@ class ServiceUsuario {
             let response = await axios.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + googleToken);
 
             if(response.status === 200){
-                this.createOrUpdateUsuarioFromGoogle(response.data)
-                cache.set(googleToken, response.data.exp*1000);
+                this.createOrUpdateUsuarioFromGoogle(response.data);
+                await cache.init();
+                cache.setItem(googleToken, response.data.exp*1000);
                 console.log("Token guardado en cache:"+cache.get(googleToken))
                 return {status: 200, res: {email:response.data.email, token:googleToken}}
             }else{
