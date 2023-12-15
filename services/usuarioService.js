@@ -93,7 +93,7 @@ class ServiceUsuario {
         }else{
             if(Date.now()>val){
                 console.log("PONGO EL TOKEN A UNDEFINED")
-                cache.setItem(token, undefined);
+                await cache.setItem(token, undefined);
                 return false;
             }else{
                 return true;
@@ -108,7 +108,7 @@ class ServiceUsuario {
             if(response.status === 200){
                 this.createOrUpdateUsuarioFromGoogle(response.data);
                 await cache.init();
-                cache.setItem(googleToken, response.data.exp*1000);
+                await cache.setItem(googleToken, response.data.exp*1000);
                 console.log("Token guardado en cache:"+cache.get(googleToken))
                 return {status: 200, res: {email:response.data.email, token:googleToken}}
             }else{
@@ -118,7 +118,7 @@ class ServiceUsuario {
         }
         catch (error) {
             console.error('Error al verificar el token de Google:', error);
-            return {status: 401, res: "token no valido"};
+            return {status: 401, res: "Token no valido"};
         }
     }
 
