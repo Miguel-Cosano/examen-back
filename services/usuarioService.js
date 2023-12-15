@@ -4,7 +4,7 @@ const axios = require('axios');
 const ServiceProducto = require('../services/productoService');
 const serviceProducto = new ServiceProducto();
 
-const cache = Global.cache;
+const cache = global.cache;
 
 
 function formatarFecha(fecha) {

@@ -5,7 +5,7 @@ const NodeCache = require('node-cache');
 const cors = require('cors')
 const app = express()
 
-Global.cache = new NodeCache();
+global.cache = new NodeCache();
 const bodyParser = require('body-parser')
 
 const {routerImage} = require('./routes/routerImage')
