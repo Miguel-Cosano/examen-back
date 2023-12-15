@@ -4,7 +4,7 @@ const axios = require('axios');
 const ServiceProducto = require('../services/productoService');
 const serviceProducto = new ServiceProducto();
 
-const cache = require('node-persist');
+const cache = Global.cache;
 
 
 function formatarFecha(fecha) {
@@ -85,15 +85,14 @@ class ServiceUsuario {
     }
 
     async checkToken(token) {
-        await cache.init();
-        let val = await cache.getItem(token)
+        let val = cache.get(token)
         console.log("Token obtenidod de cache:"+val)
         if(val === undefined){
             return false;
         }else{
             if(Date.now()>val){
                 console.log("PONGO EL TOKEN A UNDEFINED")
-                await cache.setItem(token, undefined);
+                cache.del(token);
                 return false;
             }else{
                 return true;
@@ -107,8 +106,7 @@ class ServiceUsuario {
 
             if(response.status === 200){
                 this.createOrUpdateUsuarioFromGoogle(response.data);
-                await cache.init();
-                await cache.setItem(googleToken, response.data.exp*1000);
+                cache.set(googleToken, response.data.exp*1000);
                 console.log("Token guardado en cache:"+cache.get(googleToken))
                 return {status: 200, res: {email:response.data.email, token:googleToken}}
             }else{

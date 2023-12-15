@@ -1,9 +1,11 @@
 require('./db/mongoose')
+console.log("INITIALIZING SERVER")
 const express = require('express')
 const NodeCache = require('node-cache');
 const cors = require('cors')
 const app = express()
-const cache = new NodeCache();
+
+Global.cache = new NodeCache();
 const bodyParser = require('body-parser')
 
 const {routerImage} = require('./routes/routerImage')
