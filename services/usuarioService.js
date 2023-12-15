@@ -4,7 +4,7 @@ const axios = require('axios');
 const ServiceProducto = require('../services/productoService');
 const serviceProducto = new ServiceProducto();
 
-var cache = require('../local_cache/memory_cache');
+var cache = require('local_cache.js');
 function formatarFecha(fecha) {
     const dia = fecha.getDate().toString().padStart(2, '0');
     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 porque los meses comienzan desde 0
@@ -89,7 +89,7 @@ class ServiceUsuario {
             return false;
         }else{
             if(Date.now()>val){
-                cache.del(token)
+                cache.set(token, undefined);
                 return false;
             }else{
                 return true;
