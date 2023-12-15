@@ -4,8 +4,13 @@ const express = require('express')
 const NodeCache = require('node-cache');
 const cors = require('cors')
 const app = express()
+if(global.cache === undefined){
+    console.log("INITIALIZING CACHE")
+    global.cache = new NodeCache();
+}else{
+    console.log("CACHE ALREADY INITIALIZED")
+}
 
-global.cache = new NodeCache();
 const bodyParser = require('body-parser')
 
 const {routerImage} = require('./routes/routerImage')
