@@ -89,6 +89,7 @@ class ServiceUsuario {
             return false;
         }else{
             if(Date.now()>val){
+                console.log("PONGO EL TOKEN A UNDEFINED")
                 cache.set(token, undefined);
                 return false;
             }else{
