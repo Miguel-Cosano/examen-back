@@ -1,11 +1,11 @@
 const Log = require('../db/models/log');
 
-class ServiceEvento {
+class ServiceLog {
     constructor() {
     }
 
     async findAll() {
-        const res = await Log.find();
+        const res = await Log.find().sort({timeStamp: -1});
         return res;
     }
 
@@ -21,6 +21,7 @@ class ServiceEvento {
 
 
     async create(timeStamp, usuario, caducidad, token) {
+        console.log(timeStamp)
         const res = await Log.create(
             {
                 timeStamp: timeStamp,
@@ -29,10 +30,11 @@ class ServiceEvento {
                 token: token
             }
         );
+        console.log("Log creado "+ res)
         return res;
     }
 
 
 }
 
-module.exports =ServiceEvento;
+module.exports = ServiceLog;

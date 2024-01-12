@@ -1,14 +1,14 @@
 const {Schema, model} = require('mongoose')
 const mongoose = require('mongoose')
 const eventoSchema = new Schema({
-    nombre: String,
-    timestamp: Date,
-    lugar: Number,
-    lat: Number,
-    long: Number,
-    organizador: String,
+    nombre: {type: String,required: true},
+    timeStamp: {type: Date,required: true},
+    lugar: {type: Number,required: true},
+    lat: {type: Number, required: true},
+    long: {type: Number, required: true},
+    organizador: {type: String,required: true},
     imagen: String
 })
 
 
-module.exports = mongoose.models.Evento || mongoose.model('Evento', eventoSchema)
+module.exports = mongoose.model('Evento', eventoSchema)

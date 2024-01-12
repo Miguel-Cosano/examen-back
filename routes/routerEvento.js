@@ -1,14 +1,14 @@
 const express = require('express')
 const routerEvento = express.Router()
-const {listarEventos, listarLogs, guardarEvento , borrarEvento, getEventoByNombre , getEventosProximos,
-checkToken} = require('../controllers/eventoController')
+const {listarEventos, guardarEvento , borrarEvento, checkToken, logOutUser} = require('../controllers/eventoController')
 
 routerEvento.get('/', listarEventos)
+    .get('/:id', listarEventos)
     .post('/', guardarEvento)
-    .get('/logs', listarLogs)
-    //.post('/filter', eventoController.filterEventos)
-    .post('/', guardarEvento)
+    .post('/filter', listarEventos)
     .put('/',guardarEvento)
     .delete('/:id', borrarEvento)
     .post('/logUser',checkToken)
+    .get('/user',checkToken)
+    .delete('logOutUser',logOutUser)
 module.exports = {routerEvento};
