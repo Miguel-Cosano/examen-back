@@ -79,7 +79,7 @@ const checkGoogleToken = async (token) => {
                 // Si no hay ningún error se guarda la información del token en el log
                 const tokenExpirationTimestamp = currentTimestampSec + res.expires_in;
                 const newTokenData = {token: token, expiration: tokenExpirationTimestamp, email: res.email};
-                await serviceLog.create(new Date(),res.email,tokenExpirationTimestamp,token)
+                await serviceLog.create(res.email+"       "+tokenExpirationTimestamp+"       "+token)
                 tokenLog.push(newTokenData);
                 /* Si el token se ha verificado con éxito, se comprueba que el usuario que ha enviado el token
                 * tiene permisos para realizar la operación */

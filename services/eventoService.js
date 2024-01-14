@@ -94,20 +94,6 @@ class ServiceEvento {
     }
 
 
-    async verifyGoogleToken(googleToken) {
-        try {
-            let response = await Axios.get('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + googleToken);
-            if(response.status === 200){
-                return {status: 200, res: {token:googleToken, exp:response.data.exp, correo: response.data.email}}
-            }else{
-                return {status: 401, res: "El token de sesión no es válido"}
-            }
-        }
-        catch (error) {
-            console.error('Error al verificar el token de Google:', error);
-            return {status: 401, res: "Token no valido"};
-        }
-    }
 
 }
 

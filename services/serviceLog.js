@@ -20,14 +20,11 @@ class ServiceLog {
 
 
 
-    async create(timeStamp, usuario, caducidad, token) {
-        console.log(timeStamp)
+    async create(message) {
         const res = await Log.create(
             {
-                timeStamp: timeStamp,
-                usuario: usuario,
-                caducidad: caducidad,
-                token: token
+                timeStamp: new Date(),
+                message: message
             }
         );
         console.log("Log creado "+ res)
