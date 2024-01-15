@@ -67,10 +67,6 @@ class ServiceEvento {
                 imagen: evento.imagen
             }
         );
-        if(res.imagen !== undefined){
-            const res_upload = await uploadImage(res._id, res.imagen);
-        }
-
         return res;
     }
 

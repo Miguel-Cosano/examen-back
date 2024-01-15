@@ -8,7 +8,4 @@ routerEvento.get('/', listarEventos)
     .post('/filter', listarEventos)
     .put('/',guardarEvento)
     .delete('/:id', borrarEvento)
-    .post('/logUser',checkToken)
-    .get('/user',checkToken)
-    .delete('logOutUser',logOutUser)
 module.exports = {routerEvento};
