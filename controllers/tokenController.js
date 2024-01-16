@@ -4,9 +4,17 @@ const getUserByToken = async (req, res) => {
     try {
         const token = req.headers.authorization;
         const user = await getUserFromToken(token);
-        res.status(200).send({user: user});
+        if(user.status === 401){
+            res.status(user.status).send(user.data);
+        }else{
+            res.status(user.status).send({user: user.data});
+        }
     } catch (error) {
-        res.status(500).send({success: false, message: error.message});
+        if(error.status === 401){
+            res.status(401).send("Token no valido");
+        }else{
+            res.status(500).send({success: false, message: error.message});
+        }
     }
 
 }

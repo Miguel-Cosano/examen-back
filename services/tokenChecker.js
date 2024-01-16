@@ -28,8 +28,6 @@ const verifyGoogleToken = async (token) => {
     try {
         return await axios.get(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${token}`)
             .then((result) => {
-                console.log("LOS DATILLO DEL TOKEN "+JSON.stringify(result.data))
-
                 return result.data;
             });
     } catch (error) {
@@ -41,10 +39,15 @@ const getUserFromToken = async (token) => {
     try {
         return await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`)
             .then((result) => {
-                return {email: result.data.email, nombre: result.data.name, imagen: result.data.picture};
+                if(result.status === 200){
+                    return {status: 200, data:{email: result.data.email, nombre: result.data.name, imagen: result.data.picture}};
+                }else{
+                    return {status: 401, data:{result}};
+                }
             });
     } catch (error) {
-        return error.response.data;
+        console.log(error)
+        return {status: error.response.status, data: error.response.statusText};
     }
 }
 

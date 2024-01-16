@@ -15,7 +15,7 @@ app.use(cors())
 
 app.use('/evento', routerEvento)
 app.use('/log', routerLog)
-app.use('/user',routerUsuario )
+app.use('/user',routerUsuario)
 
 const port = 5001
 app.listen(port, () => {
