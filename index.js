@@ -5,17 +5,17 @@ const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
 
-const {routerEvento} = require('./routes/routerEvento')
-const {routerLog} = require('./routes/routerLog')
+
 const {routerUsuario} = require('./routes/routerUsuario')
+const {routerGasto} = require('./routes/routerGasto')
 
 app.use(bodyParser.json())
 
 app.use(cors())
 
-app.use('/evento', routerEvento)
-app.use('/log', routerLog)
+
 app.use('/user',routerUsuario)
+app.use('/gasto', routerGasto)
 
 const port = 5001
 app.listen(port, () => {

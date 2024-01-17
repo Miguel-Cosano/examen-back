@@ -20,7 +20,7 @@ const listarEventos = async (req, res) => {
 
             res.status(200).send({eventos: eventos});
         }else{
-            console.log("Listando eventos")
+            console.log("Listando todos los  eventos")
             const eventos = await serviceEvento.findAll();
             res.status(200).send({eventos: eventos});
         }
@@ -65,7 +65,6 @@ const guardarEvento = async (req, res) => {
                 const evento = await serviceEvento.create(
                     req.body.evento
                 )
-                console.log(evento)
                 if (res !== null && res !== undefined && res !== ''){
                     res.status(201).send({message: 'Evento creado con éxito', evento: evento});
                 } else {
