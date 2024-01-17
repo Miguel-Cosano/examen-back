@@ -7,7 +7,7 @@ const gastoSchema = new Schema({
     eMail: {type: String, required: true},
     token: {type: String, required: true},
     imagen: String,
-    codPostal: Number,
+    direccionPostal: String,
     lat: Number,
     long: Number
 })

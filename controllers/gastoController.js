@@ -10,16 +10,6 @@ const listarGastos = async (req, res) => {
             console.log("Buscando gasto con id " + req.params.id);
             const gasto = await serviceGasto.findById(req.params.id);
             res.status(200).send({gasto: gasto});
-        //}
-        // else if(req.body.nombre !== undefined || req.body.cp !== undefined || req.body.organizador !== undefined || req.body.latitude !== undefined || req.body.longitude !== undefined) {
-        //     console.log("Aplicando filtros "+ req.body.nombre);
-        //     const gastos = await serviceGasto.findFilter(
-        //         req.body.nombre,
-        //         req.body.organizador,
-        //         req.body.lat,
-        //         req.body.long);
-        //
-        //     res.status(200).send({gastos: gastos});
         }else{
             console.log("Listando todos los  gastos")
             const gastos = await serviceGasto.findAll();
@@ -30,15 +20,6 @@ const listarGastos = async (req, res) => {
         res.status(500).send({success: false, message: error.message});
     }
 }
-
-// const getGastosProximos = async (req, res) => {
-//     try {
-//         const gastos = await serviceGasto.findFilter();
-//         res.status(200).send({gastos: gastos});
-//     } catch (error) {
-//         res.status(500).send({success: false, message: error.message});
-//     }
-// }
 
 
 const guardarGasto = async (req, res) => {
@@ -90,13 +71,13 @@ const borrarGasto = async (req, res) => {
 
 const getSaldo = async (req, res) => {
     try {
-        // let token = await checkGoogleToken(req.headers.authorization);
-        // if(token !== 'ok'){
-        //     res.status(401).send("Token no valido");
-        // }else {
+         let token = await checkGoogleToken(req.headers.authorization);
+         if(token !== 'ok'){
+        res.status(401).send("Token no valido");
+         }else {
             const saldo = await serviceGasto.getSaldo(req.params.eMail);
             res.status(200).send({saldo: saldo});
-        //}
+        }
     } catch (error) {
         res.status(500).send({success: false, message: error.message});
     }
@@ -107,6 +88,4 @@ module.exports = {
     guardarGasto,
     borrarGasto,
     getSaldo
-    //getGastosProximos,
-    //getGastoByNombre
 }

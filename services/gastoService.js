@@ -15,45 +15,6 @@ class ServiceGasto {
         const res = await Gasto.findById(id);
         return res;
     }
-/*
-    async findFilter(nombre, organizador, latitude, longitude) {
-        let filtroBusqueda = {};
-
-        if (nombre !== undefined && nombre !== "") {
-            filtroBusqueda.nombre = {
-                '$regex': nombre,
-                '$options': 'i'
-            };
-        }
-
-        if (organizador !== undefined && organizador !== "") {
-            filtroBusqueda.organizador = {
-                '$regex': organizador,
-                '$options': 'i'
-            };
-        }
-        console.log("Valores de latitud y longitud: " + latitude + " " + longitude)
-
-
-
-
-
-        let res = await Gasto.find(filtroBusqueda).sort({ timeStamp: -1 });
-
-        if(latitude !== undefined && longitude !== undefined){
-            for(let i = 0; i < res.length; i++){
-                if(Math.abs(res[i].lat - latitude) > 0.2 || Math.abs(res[i].long - longitude) > 0.2){
-                    res.splice(i, 1);
-                    i--;
-                }
-
-            }
-        }
-
-        console.log("Resultados de la búsqueda: " + res)
-        return res;
-    }
-*/
 
     async create(gasto) {
         const res = await Gasto.create(
@@ -64,7 +25,7 @@ class ServiceGasto {
                 eMail: gasto.eMail,
                 token: gasto.token,
                 imagen: gasto.imagen,
-                codPostal: gasto.codPostal,
+                direccionPostal: gasto.direccionPostal,
                 lat: gasto.lat,
                 long: gasto.long
             }
@@ -79,24 +40,23 @@ class ServiceGasto {
         for (let i = 0; i < pagosUsuario.length; i++) {
             pagadoUsuario += pagosUsuario[i].importe;
         }
-        console.log("PAGADO POR USUARIO: " + pagadoUsuario);
 
+        const numeroUsuariosDistintos = 0;
         const setUsuarios = new Set();
         const totalPagos = await Gasto.find();
-        for(let i = 0; i < totalPagos.length; i++){
+        for (let i = 0; i < totalPagos.length; i++) {
             setUsuarios.add(totalPagos[i].eMail);
         }
-        console.log("Usuarios: " + JSON.stringify(setUsuarios));
+
 
         let pagoTotal = 0;
         for(let i = 0; i < totalPagos.length; i++){
             pagoTotal += totalPagos[i].importe;
         }
 
-        console.log("Pago total: " + pagoTotal);
-       return pagoTotal/setUsuarios.size - pagadoUsuario;
+       return pagadoUsuario - (pagoTotal / setUsuarios.size)
     } catch (error) {
-        return 0;
+        return -1;
     }
     }
 
